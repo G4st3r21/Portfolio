@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <div class="page-header">
+        <h1 class="text-center headname">Портфолио</h1>
+        <h4 class="text-center">Здесь продемонстрированы работы, выполненные на разных языках программирования</h4>
+    </div>
+    {% for language, lang_projects in projects.items %}
+        <div class="row">
+            <h2 class="text-center" id="language"><b>{{ language.name }}</b></h2>
+        </div>
+        <div class="row">
+            {% for project in lang_projects %}
+                <div class="col-sm-4">
+                    <div class="card h-100 text-white bg-dark">
+                        <img src="{% static language.img_link %}" class="card-img-top" alt="">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ project.name }}</h5>
+                            <p class="card-text">{{ project.description }}</p>
+                        </div>
+                        <div class="card-footer border-dark">
+                            <a target="_blank" href="{{ project.github_link }}"
+                               class="btn btn-secondary">Просмотреть
+                                на github.com</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="d-grid gap-2 more">
+            <a class="btn btn-outline-light" type="button" href="{% url 'portfolio_path' language.name|lower %}">Больше</a>
+        </div>
+
+    {% endfor %}
+{% endblock %}

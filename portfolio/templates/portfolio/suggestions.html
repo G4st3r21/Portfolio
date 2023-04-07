@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <h1 class="text-center headname">Отзывы</h1>
+
+    <div class="row" style="margin-top: 40px">
+        {% for suggestion in suggestions %}
+            <div class="col-sm-4">
+                <div class="card h-100 text-white bg-dark">
+                    <div class="card-body">
+                        <form>
+                            <h5 class="card-title">{{ suggestion.name }} {{ suggestion.surname }}:</h5>
+                            <p class="card-text">{{ suggestion.comment }}</p>
+                            {% if suggestion.phone_number == closable_number %}
+                                <input name="delete" value="delete" style="visibility:hidden">
+                                <input name="id" value="{{ suggestion.id }}" style="visibility:hidden">
+                                <button type="submit" class="btn btn-primary" id="delete" data-ds-dismiss="modal">
+                                    Удалить
+                                </button>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="d-grid gap-2 more">
+        <a class="btn btn-outline-light" type="button" data-toggle="modal" onclick="suggestModalStart()">
+            Оставить отзыв
+        </a>
+    </div>
+{% endblock %}

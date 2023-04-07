@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>g4st3r.portfolio</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'img/logo.jpg' %}" type="image/x-icon">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body id="unicorn">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'portfolio_path' 'all' %}">
+            <img src="{% static 'img/logo.jpg' %}" alt="" width="40" height="40">
+            g4st3r.portfolio
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'about_path' %}">Об авторе</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Языки программирования
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="{% url 'portfolio_path' 'all' %}">Все языки</a></li>
+                        <li><a class="dropdown-item" href="{% url 'portfolio_path' 'python' %}">Python</a></li>
+                        <li><a class="dropdown-item" href="{% url 'portfolio_path' 'java' %}">Java</a></li>
+                        <li><a class="dropdown-item" href="{% url 'portfolio_path' 'c++' %}">C++</a></li>
+                        <!--<li><a class="dropdown-item" href="#html">HTML+CSS</a></li>-->
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        Работа cookie этого сайта
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" onclick="clearCookies()">Очистить все cookie</a></li>
+                        <li><a class="dropdown-item" onclick="cookieModalStart()">Приветствие</a></li>
+                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'suggestions_path' %}">Отзывы</a>
+                </li>
+            </ul>
+            <form class="d-flex">
+                <input class="form-control me-2" id="finder" type="search" placeholder="Поиск" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit"
+                        onclick="javascript: FindOnPage('finder'); return false;">Найти
+                </button>
+            </form>
+        </div>
+    </div>
+</nav>
+<div id="liveAlertPlaceholder" class="alert"></div>
+<div class="container">
+    {% block content %}
+
+
+
+    {% endblock %}
+</div>
+<footer id="footer" class="text-center footer">
+    <div class="footer-div">
+        <a class="btn btn-outline-light footer-link" target="_blank" href="https://www.instagram.com/gaster.21/">instagram:
+            <b>@gaster.21</b></a>
+    </div>
+    <div class="footer-div">
+        <a class="btn btn-outline-light footer-link" target="_blank" href="https://vk.com/g4st3r7">vk:
+            <b>g4st3r7</b></a>
+    </div>
+    <div class="footer-div">
+        <a class="btn btn-outline-light footer-link" href="mailto:aporyadin003@gmail.com">mail: <b>aporyadin003@gmail.com</b></a>
+    </div>
+</footer>
+
+<div class="modal fade" id="CookieModal" tabindex="-1" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Приветствие</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="hello" style="margin-bottom: 20px"></div>
+                <input id="helloInput">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" id="close" data-bs-dismiss="modal">Закрыть</button>
+                <button type="button" class="btn btn-primary" id="save" onclick="saveName()">Сохранить</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="writeSuggestModal" tabindex="-1" aria-labelledby="" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Оставить предложение</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post">
+                    {% csrf_token %}
+                    <label for="name_input">Имя: </label><input id="name_input" name="name" type="text"
+                                                                placeholder="Иван"><br>
+                    <label for="surname_input">Фамилия: </label><input id="surname_input" name="surname" type="text"
+                                                                       placeholder="Иванов"><br>
+                    <label for="phone_number_input">Номер телефона: </label><input id="phone_number_input" name="phone"
+                                                                                   type="tel" placeholder="89008883333"><br>
+                    <label for="com">Текст: </label><input id="com" name="com" type="text"
+                                                           placeholder="Введите свой комментарий или предложение"><br>
+                    <input id="delete" name="delete" placeholder="no" style="visibility:hidden">
+                    <button type="submit" class="btn btn-primary" id="save" data-ds-dismiss="modal">Сохранить
+                    </button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+<script src="{% static 'js/finder.js' %}"></script>
+<script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

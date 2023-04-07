@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container" style="width: 100%;">
+    <div class="row">
+        <h1 class="text-center" id="about">Об авторе</h1>
+    </div>
+    <div class="about">
+        <img src="{% static 'img/logo.jpg' %}" class="img-thumbnail" alt="..." style="height: 300px">
+        <p class="h4 about">
+            Порядин Александр Вячеславович. Студент 4 группы 1 курса Факультета Компьютерных Наук Воронежского
+            Государственного Университета. Закончил Гимназию №9 с общим баллом по ЕГЭ, равным 253 баллам. 2 года
+            изучения языка Python, несколько готовых проектов и несколько в разработке в реальное время. Опыт разработки
+            на Java и C++. Множество сверстанных сайтов и написанных ботов для Telegram.
+        </p>
+    </div>
+</div>
+
+
+{% endblock %}
